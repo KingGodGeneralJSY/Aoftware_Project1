@@ -1,20 +1,27 @@
 import sys, socket
 
-
 IP = "127.0.0.1"
 PORT = 8888
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.bind(("127.0.0.1", 8888))
 
-print("start listen")
+print('start program')
+
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+address = (IP, PORT)
+
+s.bind(address)
 s.listen(1)
 
-csocket, address = s.accept()
+print('start accept')
+cs, caddress = s.accept()
+print(caddress)
 
-print(address)
 while True:
-    date = csocket.recv(1024)
-    print(date.decode())
+    data = cs.recv(1024)
+    if not data:
+        break
+    cs.sendall(data)
+    print("client: %s" % data.decode())
 
 
 s.close()
